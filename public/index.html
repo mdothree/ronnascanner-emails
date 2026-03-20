@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RonnaScanner — Email Finder &amp; Verifier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- SEO & Social -->
+  <meta name="description" content="Find and verify professional email addresses using first name, last name, and company domain." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ronnascanner.com/emails" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ronnascanner.com/emails" />
+  <meta property="og:title" content="RonnaScanner — Email Finder & Verifier" />
+  <meta property="og:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
+  <meta property="og:image" content="https://ronnascanner.com/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RonnaScanner — Email Finder & Verifier" />
+  <meta name="twitter:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
+  <meta name="twitter:image" content="https://ronnascanner.com/og-image.png" />
+
+  <!-- Theme color -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#F97316" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+    <nav class="nav" aria-label="Main navigation">
+    <a href="/" class="nav-brand">ronna<span>.</span>scanner</a>
+    <div class="nav-links">
+      <span class="plan-badge plan-badge-pro plan-badge-hidden" id="plan-badge"></span>
+      <a href="#" id="nav-login" class="nav-link">Sign In</a>
+      <button class="btn-upgrade-nav nav-upgrade-hidden" id="nav-upgrade">&#9889; Upgrade</button>
+      <button class="btn-icon nav-manage-hidden" id="nav-manage">Manage Plan</button>
+      <a href="#" id="nav-signup" class="btn-nav">Free Trial</a>
+    </div>
+  </nav>
+  <div class="modal-overlay hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Close dialog">&times;</button>
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="login">Sign In</button>
+        <button class="tab-btn" data-tab="signup">Sign Up</button>
+      </div>
+      <div class="tab-content" id="tab-login">
+        <input type="email" class="input" id="login-email" placeholder="Email" />
+        <input type="password" class="input" id="login-password" placeholder="Password" />
+        <button class="btn-primary full" id="btn-login" aria-label="Sign in to your account">Sign In</button>
+      </div>
+      <div class="tab-content hidden" id="tab-signup">
+        <input type="text" class="input" id="signup-name" placeholder="Full Name" />
+        <input type="email" class="input" id="signup-email" placeholder="Email" />
+        <input type="password" class="input" id="signup-password" placeholder="Password" />
+        <button class="btn-primary full" id="btn-signup" aria-label="Create a new account">Start Free Trial</button>
+      </div>
+      <p class="auth-error hidden" id="auth-error"></p>
+    </div>
+  </div>
+  <section class="hero" id="main-content">
+    <div class="hero-badge">Find &amp; Verify Business Emails</div>
+    <h1 class="hero-title"><em>Email Finder &amp; Verifier</em></h1>
+    <p class="hero-sub">Discover verified professional email addresses for any contact or domain.</p>
+  </section>
+  <section class="tool-section" aria-label="Main tool" id="tool">
+    <div id="usage-meter-container"></div>
+    <div class="tool-container" id="tool-container">
+      <div class="tool-panel">
+        <div class="panel-header"><span class="panel-num">01</span><h2>Email Finder &amp; Verifier</h2></div>
+        <div class="tool-tabs">
+          <button class="tool-tab active" data-tool="find">Find Email</button>
+          <button class="tool-tab" data-tool="verify">Verify Email</button>
+          <button class="tool-tab" data-tool="bulk">Bulk Find</button>
+        </div>
+        <div class="tool-view active" id="tool-find">
+          <div class="filter-grid">
+            <div><label class="field-label">First Name</label><input type="text" class="input" id="find-first" placeholder="John"/></div>
+            <div><label class="field-label">Last Name</label><input type="text" class="input" id="find-last" placeholder="Smith"/></div>
+            <div><label class="field-label">Company Domain</label><input type="text" class="input" id="find-domain" placeholder="company.com"/></div>
+          </div>
+          <div class="tool-actions"><button class="btn-primary" id="btn-find-email"><span class="btn-text">Find Email</span><span class="btn-loader hidden">Searching...</span></button></div>
+        </div>
+        <div class="tool-view hidden" id="tool-verify">
+          <label class="field-label">Email Address to Verify</label>
+          <input type="email" class="input" id="verify-input" placeholder="john@company.com"/>
+          <div class="tool-actions" class="mt-1"><button class="btn-primary" id="btn-verify"><span class="btn-text">Verify Email</span><span class="btn-loader hidden">Verifying...</span></button></div>
+        </div>
+        <div class="tool-view hidden" id="tool-bulk">
+          <label class="field-label">Names &amp; Domains (one per line: FirstName LastName domain.com)</label>
+          <textarea class="input textarea" id="bulk-input" placeholder="John Smith acme.com&#10;Jane Doe stripe.com"></textarea>
+          <div class="tool-actions" class="mt-1"><button class="btn-primary" id="btn-bulk"><span class="btn-text">Find All Emails</span><span class="btn-loader hidden">Processing...</span></button></div>
+        </div>
+      </div>
+      <div class="results-panel hidden" id="results-panel">
+        <div class="results-table-wrap">
+          <table class="results-table">
+            <thead><tr><th>Email</th><th>Status</th><th>Confidence</th><th>Source</th><th>Action</th></tr></thead>
+            <tbody id="emails-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <p>&copy; 2025 ronnascanner.com &mdash; Powered by Apollo, Hunter &amp; Clearbit</p>
+  </footer>
+  <script type="module" src="js/app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
