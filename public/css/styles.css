@@ -26,12 +26,19 @@ body { font-family: 'Syne', 'DM Sans', sans-serif; background: var(--off-white);
 /* NAV */
 .nav { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1rem 2.5rem; background:rgba(255,251,247,0.94); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray-200); }
 .nav-brand { font-family:'Syne',sans-serif; font-size:1.35rem; font-weight:800; color:var(--dark); text-decoration:none; }
-.nav-brand span { color:var(--orange); }
+.nav-brand .scanner { color:var(--orange); }
 .nav-links { display:flex; align-items:center; gap:1rem; }
 .nav-link { color:var(--gray-700); text-decoration:none; font-weight:500; font-size:.95rem; transition:color .2s; }
 .nav-link:hover { color:var(--dark); }
 .btn-nav { background:var(--orange); color:var(--white); padding:.5rem 1.25rem; border-radius:8px; text-decoration:none; font-weight:700; font-size:.9rem; transition:background .2s; }
 .btn-nav:hover { background:var(--orange-dark); }
+
+/* COMING SOON BANNER */
+.coming-soon-banner { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-bottom: 1px solid #F59E0B; padding: 0.75rem 2rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+.badge-soon { background: #D97706; color: white; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.text-soon { color: #92400E; font-size: 0.875rem; }
+.text-soon a { color: #D97706; font-weight: 600; text-decoration: underline; }
+.text-soon a:hover { color: #B45309; }
 
 /* MODAL */
 .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(15,23,42,.6); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; }
@@ -116,7 +123,18 @@ body { font-family: 'Syne', 'DM Sans', sans-serif; background: var(--off-white);
 .footer { text-align:center; padding:2rem; color:var(--gray-400); font-size:.85rem; border-top:1px solid var(--gray-200); }
 
 /* RESPONSIVE */
-@media(max-width:700px) { .nav{padding:1rem 1.25rem;} .tool-section{padding:3rem 1rem;} }
+/* RESPONSIVE */
+@media(max-width:700px) {
+  .nav { padding:.75rem 1rem; gap:.5rem; }
+  .nav-brand { font-size:1.1rem; }
+  .nav-brand .scanner { display:none; }
+  .nav-links { gap:.5rem; }
+  .nav-link { font-size:.8rem; padding:.4rem .6rem; }
+  .btn-nav { padding:.4rem .75rem; font-size:.75rem; }
+  .btn-icon { padding:.3rem .6rem; font-size:.75rem; }
+  .btn-upgrade-nav { padding:.35rem .7rem; font-size:.72rem; }
+  .tool-section { padding:3rem 1rem; }
+}
 /* ============================================================
    PAYWALL & STRIPE EMBEDDED — Shared Styles
    Injected into every project's styles.css

@@ -6,6 +6,7 @@
   <title>RonnaScanner — Email Finder &amp; Verifier</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c17f24'/><text x='16' y='23' font-family='sans-serif' font-weight='700' font-size='12' fill='white'>✉</text></svg>">
   <link rel="stylesheet" href="css/styles.css" />
   <!-- SEO & Social -->
   <meta name="description" content="Find and verify professional email addresses using first name, last name, and company domain." />
@@ -17,13 +18,16 @@
   <meta property="og:url" content="https://ronnascanner.com/emails" />
   <meta property="og:title" content="RonnaScanner — Email Finder & Verifier" />
   <meta property="og:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
-  <meta property="og:image" content="https://ronnascanner.com/og-image.png" />
+  <meta property="og:image" content="./og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="RonnaScanner — Email Finder & Verifier" />
   <meta name="twitter:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
-  <meta name="twitter:image" content="https://ronnascanner.com/og-image.png" />
+  <meta name="twitter:image" content="./og-image.jpg" />
 
   <!-- Theme color -->
   <link rel="manifest" href="/manifest.json" />
@@ -32,7 +36,7 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
     <nav class="nav" aria-label="Main navigation">
-    <a href="/" class="nav-brand">ronna<span>.</span>scanner</a>
+    <a href="/" class="nav-brand">Ronna</a>
     <div class="nav-links">
       <span class="plan-badge plan-badge-pro plan-badge-hidden" id="plan-badge"></span>
       <a href="#" id="nav-login" class="nav-link">Sign In</a>
@@ -41,6 +45,10 @@
       <a href="#" id="nav-signup" class="btn-nav">Free Trial</a>
     </div>
   </nav>
+  <div class="coming-soon-banner">
+    <span class="badge-soon">⚠️ COMING SOON</span>
+    <span class="text-soon">Email Finder API integration is being built. <a href="https://leads.ronnascanner.com">Try our working Lead Scanner →</a></span>
+  </div>
   <div class="modal-overlay hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
     <div class="modal">
       <button class="modal-close" id="modal-close" aria-label="Close dialog">&times;</button>
