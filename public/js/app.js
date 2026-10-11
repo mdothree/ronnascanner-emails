@@ -50,12 +50,12 @@ async function runEmailTool() {
 
     const res = await apiFetch("/api/emails/find", payload);
     const data = await res.json();
-    results = data.results || mockEmailResults(payload);
+    results = data.results || null;
   } catch {
-    results = mockEmailResults({ mode: activeTab });
+    results = null;
   }
 
-  renderResults(results);
+  if (results) renderResults(results); else showUnavailable();
   document.querySelector(".btn-text").classList.remove("hidden");
   document.querySelector(".btn-loader").classList.add("hidden");
   document.getElementById("btn-find-email").disabled = false;
@@ -71,7 +71,7 @@ function renderResults(items) {
       <td>${r.company || "—"}</td>
       <td><span class="tag ${statusClass}">${r.status || "unknown"}</span></td>
       <td>${r.confidence ? r.confidence + "%" : "—"}</td>
-      <td>${r.source || "Hunter.io"}</td>
+      <td>${r.source || "—"}</td>
     </tr>`;
   }).join("");
   document.getElementById("results-section").classList.remove("hidden");
@@ -99,13 +99,12 @@ async function loadHistory() {
     : "<p class='empty-state'>No saved results yet.</p>";
 }
 
-function mockEmailResults({ mode } = {}) {
-  const emails = ["john.smith@acme.com","sarah.jones@acme.com","mike.davis@acme.com","emily.chen@acme.com"];
-  return emails.map(email => ({
-    email, name: email.split("@")[0].replace(".", " ").replace(/\b\w/g, c => c.toUpperCase()),
-    company: email.split("@")[1].split(".")[0],
-    status: ["valid","valid","risky","invalid"][Math.floor(Math.random()*4)],
-    confidence: Math.floor(Math.random()*30)+70,
-    source: "Hunter.io"
-  }));
+// RONNA-MOCK-FALLBACK: never fabricate results when the scanner API is unavailable.
+function showUnavailable() {
+  const panel = document.getElementById("results-panel") || document.getElementById("results-section");
+  if (panel) {
+    panel.classList.remove("hidden");
+    panel.innerHTML = '<div class="empty-state" role="status"><p><strong>The scanner service is unavailable right now.</strong></p><p>No results were generated. Please try again later.</p></div>';
+  }
+  toast.error("Scanner service unavailable. No results were generated.");
 }
