@@ -13,69 +13,68 @@ initRonna({ usageAction: "lookups" }).then(user => {
   currentUser = user;
   if (user) loadHistory();
 });
-// Tab switching
-document.querySelectorAll(".etab").forEach(tab => {
+// Tab switching (markup: .tool-tab[data-tool] → #tool-<name>.tool-view)
+document.querySelectorAll(".tool-tab").forEach(tab => {
   tab.addEventListener("click", () => {
-    document.querySelectorAll(".etab").forEach(t => t.classList.remove("active"));
-    document.querySelectorAll(".email-mode").forEach(m => m.classList.add("hidden"));
+    document.querySelectorAll(".tool-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tool-view").forEach(m => { m.classList.add("hidden"); m.classList.remove("active"); });
     tab.classList.add("active");
-    document.getElementById(`mode-${tab.dataset.mode}`)?.classList.remove("hidden");
+    const view = document.getElementById(`tool-${tab.dataset.tool}`);
+    view?.classList.remove("hidden");
+    view?.classList.add("active");
   });
 });
 
-document.getElementById("btn-find-email").addEventListener("click", () => {
-  gate("lookups", () => runEmailTool(), () => {});
+["btn-find-email", "btn-verify", "btn-bulk"].forEach(id => {
+  document.getElementById(id)?.addEventListener("click", () => {
+    gate("lookups", () => runEmailTool(), () => {});
+  });
 });
 
 async function runEmailTool() {
-  const activeTab = document.querySelector(".etab.active")?.dataset.mode || "find";
-  document.querySelector(".btn-text").classList.add("hidden");
-  document.querySelector(".btn-loader").classList.remove("hidden");
-  document.getElementById("btn-find-email").disabled = true;
+  const activeTab = document.querySelector(".tool-tab.active")?.dataset.tool || "find";
+  const btn = document.getElementById({ find: "btn-find-email", verify: "btn-verify", bulk: "btn-bulk" }[activeTab] || "btn-find-email");
+  btn.querySelector(".btn-text")?.classList.add("hidden");
+  btn.querySelector(".btn-loader")?.classList.remove("hidden");
+  btn.disabled = true;
 
   try {
     let payload = { mode: activeTab };
     if (activeTab === "find") {
-      payload.firstName = document.getElementById("first-name").value;
-      payload.lastName  = document.getElementById("last-name").value;
+      payload.firstName = document.getElementById("find-first").value;
+      payload.lastName  = document.getElementById("find-last").value;
       payload.domain    = document.getElementById("find-domain").value;
-    } else if (activeTab === "domain") {
-      payload.domain = document.getElementById("domain-input").value;
-      payload.limit  = document.getElementById("domain-limit").value;
     } else if (activeTab === "verify") {
-      payload.email = document.getElementById("verify-email").value;
+      payload.email = document.getElementById("verify-input").value;
     } else {
-      payload.emails = document.getElementById("bulk-emails").value.split("\n").filter(Boolean);
+      payload.emails = document.getElementById("bulk-input").value.split("\n").filter(Boolean);
     }
 
-    const res = await apiFetch("/api/emails/find", payload);
-    const data = await res.json();
-    results = data.results || null;
+    const data = await apiFetch("/api/emails/find", payload);
+    results = data?.results || null;
   } catch {
     results = null;
   }
 
   if (results) renderResults(results); else showUnavailable();
-  document.querySelector(".btn-text").classList.remove("hidden");
-  document.querySelector(".btn-loader").classList.add("hidden");
-  document.getElementById("btn-find-email").disabled = false;
+  btn.querySelector(".btn-text")?.classList.remove("hidden");
+  btn.querySelector(".btn-loader")?.classList.add("hidden");
+  btn.disabled = false;
 }
 
 function renderResults(items) {
-  document.getElementById("result-count").textContent = items.length;
-  document.getElementById("results-tbody").innerHTML = items.map(r => {
+  document.getElementById("emails-tbody").innerHTML = items.map(r => {
     const statusClass = r.status === "valid" ? "tag-green" : r.status === "risky" ? "tag-orange" : "tag-gray";
     return `<tr>
-      <td><strong>${r.email}</strong></td>
-      <td>${r.name || "—"}</td>
-      <td>${r.company || "—"}</td>
+      <td><strong>${r.email}</strong>${r.name ? `<br /><small>${r.name}${r.company ? " · " + r.company : ""}</small>` : ""}</td>
       <td><span class="tag ${statusClass}">${r.status || "unknown"}</span></td>
       <td>${r.confidence ? r.confidence + "%" : "—"}</td>
       <td>${r.source || "—"}</td>
+      <td>${r.email ? `<a href="mailto:${r.email}">Email</a>` : "—"}</td>
     </tr>`;
   }).join("");
-  document.getElementById("results-section").classList.remove("hidden");
-  document.getElementById("results-section").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("results-panel").classList.remove("hidden");
+  document.getElementById("results-panel").scrollIntoView({ behavior: "smooth" });
 }
 
 document.getElementById("btn-export-csv")?.addEventListener("click", () => {
@@ -90,9 +89,9 @@ document.getElementById("btn-save")?.addEventListener("click", async () => {
 });
 
 async function loadHistory() {
-  const items = await getFromFirestore("email-results");
   const grid = document.getElementById("history-grid");
-  if (!grid) return;
+  if (!grid) return; // no history UI on this page
+  const items = await getFromFirestore("email-results");
   document.getElementById("history-section").classList.remove("hidden");
   grid.innerHTML = items.length
     ? items.map(i => `<div class="result-card"><div class="result-count">${i.count || 0}</div><small>${i.createdAt?.toDate?.().toLocaleDateString?.() || "Recently"}</small></div>`).join("")
@@ -101,10 +100,10 @@ async function loadHistory() {
 
 // RONNA-MOCK-FALLBACK: never fabricate results when the scanner API is unavailable.
 function showUnavailable() {
-  const panel = document.getElementById("results-panel") || document.getElementById("results-section");
-  if (panel) {
-    panel.classList.remove("hidden");
-    panel.innerHTML = '<div class="empty-state" role="status"><p><strong>The scanner service is unavailable right now.</strong></p><p>No results were generated. Please try again later.</p></div>';
-  }
+  // Keep the results table in the DOM so a later successful lookup can render into it.
+  results = [];
+  document.getElementById("results-panel")?.classList.remove("hidden");
+  const tbody = document.getElementById("emails-tbody");
+  if (tbody) tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state" role="status"><p><strong>The scanner service is unavailable right now.</strong></p><p>No results were generated. Please try again later.</p></div></td></tr>';
   toast.error("Scanner service unavailable. No results were generated.");
 }
