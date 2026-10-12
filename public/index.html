@@ -11,11 +11,11 @@
   <!-- SEO & Social -->
   <meta name="description" content="Find and verify professional email addresses using first name, last name, and company domain." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://ronnascanner.com/emails" />
+  <link rel="canonical" href="https://emails.ronnascanner.com/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ronnascanner.com/emails" />
+  <meta property="og:url" content="https://emails.ronnascanner.com/" />
   <meta property="og:title" content="RonnaScanner — Email Finder & Verifier" />
   <meta property="og:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
   <meta property="og:image" content="https://emails.ronnascanner.com/og-card.png" />
@@ -95,19 +95,19 @@
         </div>
         <div class="tool-view active" id="tool-find">
           <div class="filter-grid">
-            <div><label class="field-label">First Name</label><input type="text" class="input" id="find-first" placeholder="John"/></div>
-            <div><label class="field-label">Last Name</label><input type="text" class="input" id="find-last" placeholder="Smith"/></div>
-            <div><label class="field-label">Company Domain</label><input type="text" class="input" id="find-domain" placeholder="company.com"/></div>
+            <div><label class="field-label" for="find-first">First Name</label><input type="text" class="input" id="find-first" placeholder="John"/></div>
+            <div><label class="field-label" for="find-last">Last Name</label><input type="text" class="input" id="find-last" placeholder="Smith"/></div>
+            <div><label class="field-label" for="find-domain">Company Domain</label><input type="text" class="input" id="find-domain" placeholder="company.com"/></div>
           </div>
           <div class="tool-actions"><button class="btn-primary" id="btn-find-email"><span class="btn-text">Find Email</span><span class="btn-loader hidden">Searching...</span></button></div>
         </div>
         <div class="tool-view hidden" id="tool-verify">
-          <label class="field-label">Email Address to Verify</label>
+          <label class="field-label" for="verify-input">Email Address to Verify</label>
           <input type="email" class="input" id="verify-input" placeholder="john@company.com"/>
           <div class="tool-actions" class="mt-1"><button class="btn-primary" id="btn-verify"><span class="btn-text">Verify Email</span><span class="btn-loader hidden">Verifying...</span></button></div>
         </div>
         <div class="tool-view hidden" id="tool-bulk">
-          <label class="field-label">Names &amp; Domains (one per line: FirstName LastName domain.com)</label>
+          <label class="field-label" for="bulk-input">Names &amp; Domains (one per line: FirstName LastName domain.com)</label>
           <textarea class="input textarea" id="bulk-input" placeholder="John Smith acme.com&#10;Jane Doe stripe.com"></textarea>
           <div class="tool-actions" class="mt-1"><button class="btn-primary" id="btn-bulk"><span class="btn-text">Find All Emails</span><span class="btn-loader hidden">Processing...</span></button></div>
         </div>
