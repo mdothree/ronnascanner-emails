@@ -18,7 +18,7 @@
   <meta property="og:url" content="https://ronnascanner.com/emails" />
   <meta property="og:title" content="RonnaScanner — Email Finder & Verifier" />
   <meta property="og:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
-  <meta property="og:image" content="./og-image.jpg" />
+  <meta property="og:image" content="https://emails.ronnascanner.com/og-card.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_US" />
@@ -27,11 +27,18 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="RonnaScanner — Email Finder & Verifier" />
   <meta name="twitter:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
-  <meta name="twitter:image" content="./og-image.jpg" />
+  <meta name="twitter:image" content="https://emails.ronnascanner.com/og-card.png" />
 
   <!-- Theme color -->
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#F97316" />
+  <!-- IMG-RONNASUB-NO-ICONS / SEO-008 / SEO-004 (cycle 8) -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+  <meta property="og:site_name" content="RonnaScanner" />
+  <meta property="og:image:alt" content="RonnaScanner Email Finder &amp; Verifier" />
+  <meta name="twitter:image:alt" content="RonnaScanner Email Finder &amp; Verifier" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "RonnaScanner Email Finder & Verifier", "url": "https://emails.ronnascanner.com/", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "isPartOf": {"@type": "WebSite", "name": "RonnaScanner", "url": "https://ronnascanner.com/"}}</script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -39,13 +46,13 @@
     <a href="/" class="nav-brand">Ronna</a>
     <div class="nav-links">
       <span class="plan-badge plan-badge-pro plan-badge-hidden" id="plan-badge"></span>
-      <a href="#" id="nav-login" class="nav-link">Sign In</a>
+      <a href="#signin" id="nav-login" class="nav-link">Sign In</a>
       <button class="btn-upgrade-nav nav-upgrade-hidden" id="nav-upgrade">&#9889; Upgrade</button>
       <button class="btn-icon nav-manage-hidden" id="nav-manage">Manage Plan</button>
-      <a href="#" id="nav-signup" class="btn-nav">Free Trial</a>
+      <a href="#signup" id="nav-signup" class="btn-nav">Free Trial</a>
     </div>
   </nav>
-  <div class="coming-soon-banner">
+  <div class="coming-soon-banner" role="region" aria-label="Service status">
     <span class="badge-soon">⚠️ COMING SOON</span>
     <span class="text-soon">Email Finder API integration is being built. <a href="https://leads.ronnascanner.com">Try our working Lead Scanner →</a></span>
   </div>
@@ -57,20 +64,21 @@
         <button class="tab-btn" data-tab="signup">Sign Up</button>
       </div>
       <div class="tab-content" id="tab-login">
-        <input type="email" class="input" id="login-email" placeholder="Email" />
-        <input type="password" class="input" id="login-password" placeholder="Password" />
+        <input type="email" class="input" id="login-email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" required />
+        <input type="password" class="input" id="login-password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required />
         <button class="btn-primary full" id="btn-login" aria-label="Sign in to your account">Sign In</button>
       </div>
       <div class="tab-content hidden" id="tab-signup">
-        <input type="text" class="input" id="signup-name" placeholder="Full Name" />
-        <input type="email" class="input" id="signup-email" placeholder="Email" />
-        <input type="password" class="input" id="signup-password" placeholder="Password" />
+        <input type="text" class="input" id="signup-name" name="name" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
+        <input type="email" class="input" id="signup-email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" required />
+        <input type="password" class="input" id="signup-password" name="new-password" placeholder="Password (min 6 characters)" aria-label="Password, at least 6 characters" autocomplete="new-password" minlength="6" required />
         <button class="btn-primary full" id="btn-signup" aria-label="Create a new account">Start Free Trial</button>
       </div>
       <p class="auth-error hidden" id="auth-error"></p>
     </div>
   </div>
-  <section class="hero" id="main-content">
+  <main id="main-content" tabindex="-1">
+  <section class="hero">
     <div class="hero-badge">Find &amp; Verify Business Emails</div>
     <h1 class="hero-title"><em>Email Finder &amp; Verifier</em></h1>
     <p class="hero-sub">Discover verified professional email addresses for any contact or domain.</p>
@@ -114,17 +122,13 @@
       </div>
     </div>
   </section>
+  </main>
+
   <footer class="footer">
-    <p>&copy; 2025 ronnascanner.com</p>
+    <p>&copy; 2026 ronnascanner.com</p>
   </footer>
   <script type="module" src="js/app.js"></script>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
-  </script>
+  <script src="js/boot.js" defer></script>
 </body>
 </html>
