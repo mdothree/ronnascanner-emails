@@ -4,7 +4,7 @@ import { saveDoc, getUserDocs, tsToString } from "./services/firestoreService.js
 import { apiFetch } from "./config/env.js";
 import { toast } from "./utils/toast.js";
 import { gate } from "./services/paywallUI.js";
-import { downloadText, setLoading, formatNumber } from "./utils/helpers.js";
+import { downloadText, setLoading, formatNumber, escapeHtml, safeUrl } from "./utils/helpers.js";
 
 
 let results = [];
@@ -67,11 +67,11 @@ function renderResults(items) {
   document.getElementById("emails-tbody").innerHTML = items.map(r => {
     const statusClass = r.status === "valid" ? "tag-green" : r.status === "risky" ? "tag-orange" : "tag-gray";
     return `<tr>
-      <td><strong>${r.email}</strong>${r.name ? `<br /><small>${r.name}${r.company ? " · " + r.company : ""}</small>` : ""}</td>
-      <td><span class="tag ${statusClass}">${r.status || "unknown"}</span></td>
-      <td>${r.confidence ? r.confidence + "%" : "—"}</td>
-      <td>${r.source || "—"}</td>
-      <td>${r.email ? `<a href="mailto:${r.email}">Email</a>` : "—"}</td>
+      <td><strong>${escapeHtml(r.email)}</strong>${r.name ? `<br /><small>${escapeHtml(r.name)}${r.company ? " · " + escapeHtml(r.company) : ""}</small>` : ""}</td>
+      <td><span class="tag ${statusClass}">${escapeHtml(r.status || "unknown")}</span></td>
+      <td>${r.confidence ? escapeHtml(r.confidence) + "%" : "—"}</td>
+      <td>${escapeHtml(r.source || "—")}</td>
+      <td>${r.email ? `<a href="${escapeHtml(safeUrl("mailto:" + r.email))}">Email</a>` : "—"}</td>
     </tr>`;
   }).join("");
   document.getElementById("results-panel").classList.remove("hidden");
@@ -95,7 +95,7 @@ async function loadHistory() {
   const items = await getFromFirestore("email-results");
   document.getElementById("history-section").classList.remove("hidden");
   grid.innerHTML = items.length
-    ? items.map(i => `<div class="result-card"><div class="result-count">${i.count || 0}</div><small>${i.createdAt?.toDate?.().toLocaleDateString?.() || "Recently"}</small></div>`).join("")
+    ? items.map(i => `<div class="result-card"><div class="result-count">${escapeHtml(i.count || 0)}</div><small>${escapeHtml(i.createdAt?.toDate?.().toLocaleDateString?.() || "Recently")}</small></div>`).join("")
     : "<p class='empty-state'>No saved results yet.</p>";
 }
 
