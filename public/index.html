@@ -8,8 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c17f24'/><text x='16' y='23' font-family='sans-serif' font-weight='700' font-size='12' fill='white'>✉</text></svg>">
   <link rel="stylesheet" href="css/styles.css" />
+  <script src="/js/config/flags.js"></script>
   <!-- SEO & Social -->
-  <meta name="description" content="Find and verify professional email addresses using first name, last name, and company domain." />
+  <meta name="description" content="Coming soon: find and check professional email addresses from a first name, last name and company domain. Join the waitlist." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://emails.ronnascanner.com/" />
 
@@ -17,7 +18,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://emails.ronnascanner.com/" />
   <meta property="og:title" content="RonnaScanner — Email Finder & Verifier" />
-  <meta property="og:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
+  <meta property="og:description" content="Coming soon: find and check professional email addresses from a first name, last name and company domain. Join the waitlist." />
   <meta property="og:image" content="https://emails.ronnascanner.com/og-card.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -26,7 +27,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="RonnaScanner — Email Finder & Verifier" />
-  <meta name="twitter:description" content="Find and verify professional email addresses using first name, last name, and company domain." />
+  <meta name="twitter:description" content="Coming soon: find and check professional email addresses from a first name, last name and company domain. Join the waitlist." />
   <meta name="twitter:image" content="https://emails.ronnascanner.com/og-card.png" />
 
   <!-- Theme color -->
@@ -46,18 +47,19 @@
     <nav class="nav" aria-label="Main navigation">
     <a href="/" class="nav-brand">Ronna</a>
     <div class="nav-links">
-      <span class="plan-badge plan-badge-pro plan-badge-hidden" id="plan-badge"></span>
-      <a href="#signin" id="nav-login" class="nav-link">Sign In</a>
-      <button class="btn-upgrade-nav nav-upgrade-hidden" id="nav-upgrade">&#9889; Upgrade</button>
-      <button class="btn-icon nav-manage-hidden" id="nav-manage">Manage Plan</button>
-      <a href="#signup" id="nav-signup" class="btn-nav">Sign Up</a>
+      <span class="plan-badge plan-badge-pro plan-badge-hidden" id="plan-badge" data-ronna-live></span>
+      <a href="#signin" id="nav-login" data-ronna-live class="nav-link">Sign In</a>
+      <button class="btn-upgrade-nav nav-upgrade-hidden" id="nav-upgrade" data-ronna-live>&#9889; Upgrade</button>
+      <button class="btn-icon nav-manage-hidden" id="nav-manage" data-ronna-live>Manage Plan</button>
+      <a href="#waitlist" class="btn-nav" data-ronna-soon>Join the waitlist</a>
+      <a href="#signup" id="nav-signup" data-ronna-live class="btn-nav">Sign Up</a>
     </div>
   </nav>
-  <div class="coming-soon-banner" role="region" aria-label="Service status">
-    <span class="badge-soon">⚠️ COMING SOON</span>
-    <span class="text-soon">Email Finder API integration is being built. <a href="https://leads.ronnascanner.com">Try our working Lead Scanner →</a></span>
+  <div class="coming-soon-banner" role="region" aria-label="Service status" data-ronna-soon>
+    <span class="badge-soon">Coming soon</span>
+    <span class="text-soon">The Email Finder &amp; Verifier is not open yet, so there is nothing to run or buy today. <a href="#waitlist">Join the waitlist</a></span>
   </div>
-  <div class="modal-overlay hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+  <div class="modal-overlay hidden" id="auth-modal" data-ronna-live role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
     <div class="modal">
       <button class="modal-close" id="modal-close" aria-label="Close dialog">&times;</button>
       <div class="modal-tabs">
@@ -82,9 +84,28 @@
   <section class="hero">
     <div class="hero-badge">Find &amp; Verify Business Emails</div>
     <h1 class="hero-title"><em>Email Finder &amp; Verifier</em></h1>
-    <p class="hero-sub">Discover verified professional email addresses for any contact or domain.</p>
+    <p class="hero-sub">Discover professional email addresses for any contact or domain, and check that they can receive mail.</p>
   </section>
-  <section class="tool-section" aria-label="Main tool" id="tool">
+  <!-- RONNA-S8 coming soon (Bridge MDO-S8 option c). Shown while RONNA_LIVE is false (js/config/flags.js). -->
+  <section class="soon-section" id="waitlist" data-ronna-soon aria-labelledby="soon-title">
+    <div class="soon-card">
+      <p class="soon-kicker">Status: coming soon</p>
+      <h2 id="soon-title">The Email Finder &amp; Verifier is not open yet</h2>
+      <p>When it opens, it will find a person's work email from their name and company domain, check whether an address can receive mail, and run lookups in bulk.</p>
+      <p>The data service behind it is still being built. Until it is ready there is no scan to run and nothing to buy. Join the waitlist and we will write to you when it opens.</p>
+      <form class="waitlist-form" id="waitlist-form" data-source="emails" data-tool-name="Email Finder &amp; Verifier" novalidate>
+        <label class="field-label" for="waitlist-email">Your email</label>
+        <div class="waitlist-row">
+          <input type="email" class="input" id="waitlist-email" name="email" placeholder="you@company.com" autocomplete="email" required aria-describedby="waitlist-help" />
+          <button type="submit" class="btn-primary" id="waitlist-submit">Join the waitlist</button>
+        </div>
+        <p class="waitlist-msg" id="waitlist-msg" role="status" aria-live="polite"></p>
+      </form>
+      <p class="soon-note" id="waitlist-help">Joining opens your email app with a short message to hello@mdo3d.com. Nothing is sent until you press send. You can also <a href="mailto:hello@mdo3d.com?subject=Ronna%20Scanner%20waitlist%3A%20Email%20Finder%20%26%20Verifier">email us directly</a>.</p>
+    </div>
+  </section>
+
+  <section class="tool-section" aria-label="Main tool" id="tool" data-ronna-live>
     <div id="usage-meter-container"></div>
     <div class="tool-container" id="tool-container">
       <div class="tool-panel">
@@ -128,7 +149,8 @@
   <footer class="footer">
     <p>&copy; 2026 ronnascanner.com</p>
   </footer>
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/waitlist.js" defer></script>
 
   <script src="js/boot.js" defer></script>
 </body>
