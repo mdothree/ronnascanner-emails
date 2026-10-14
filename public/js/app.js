@@ -3,7 +3,7 @@ import { authService } from "./services/authService.js";
 import { saveDoc, getUserDocs, tsToString } from "./services/firestoreService.js";
 import { apiFetch } from "./config/env.js";
 import { toast } from "./utils/toast.js";
-import { gate } from "./services/paywallUI.js";
+import { gate, handleApiError } from "./services/paywallUI.js";
 import { downloadText, setLoading, formatNumber, escapeHtml, safeUrl } from "./utils/helpers.js";
 
 
@@ -39,6 +39,7 @@ async function runEmailTool() {
   btn.querySelector(".btn-loader")?.classList.remove("hidden");
   btn.disabled = true;
 
+  let failure = null;
   try {
     let payload = { mode: activeTab };
     if (activeTab === "find") {
@@ -53,11 +54,12 @@ async function runEmailTool() {
 
     const data = await apiFetch("/api/emails/find", payload);
     results = data?.results || null;
-  } catch {
+  } catch (err) {
     results = null;
+    failure = handleApiError(err, "lookup");
   }
 
-  if (results) renderResults(results); else showUnavailable();
+  if (results) renderResults(results); else showUnavailable(failure);
   btn.querySelector(".btn-text")?.classList.remove("hidden");
   btn.querySelector(".btn-loader")?.classList.add("hidden");
   btn.disabled = false;
@@ -100,13 +102,16 @@ async function loadHistory() {
 }
 
 // RONNA-MOCK-FALLBACK: never fabricate results when the scanner API is unavailable.
-function showUnavailable() {
+// `failure` is handleApiError's { status, title, detail } (402 paywall, 501 not open, ...).
+function showUnavailable(failure) {
+  const title = failure?.title || "The scanner service is unavailable right now.";
+  const detail = failure?.detail || "No results were generated. Please try again later.";
   // Keep the results table in the DOM so a later successful lookup can render into it.
   results = [];
   document.getElementById("results-panel")?.classList.remove("hidden");
   const tbody = document.getElementById("emails-tbody");
-  if (tbody) tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state" role="status"><p><strong>The scanner service is unavailable right now.</strong></p><p>No results were generated. Please try again later.</p></div></td></tr>';
-  toast.error("Scanner service unavailable. No results were generated.");
+  if (tbody) tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state" role="status"><p><strong>${escapeHtml(title)}</strong></p><p>${escapeHtml(detail)}</p></div></td></tr>`;
+  toast.error(detail);
 }
 
 // RONNA-LOADLIST-AWAIT-BUG (same class on this sub): saveToFirestore / getFromFirestore
